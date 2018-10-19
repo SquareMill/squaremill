@@ -7,7 +7,7 @@ module Squaremill
     class Template
       def initialize(text, config, options = {})
         @unprocessed_text = text
-        @options = options
+        @options = options.dup
         @config = config
 
         self.extract_body_and_options
@@ -46,7 +46,7 @@ module Squaremill
         # find any options at the top of the template and parse them into options
         options_text = @unprocessed_text.match(/^\s*---.*?---/im)
         if options_text
-          parsed_options = YAML.load(options_text[0]) 
+          parsed_options = YAML.load(options_text[0])
           @options.merge!(parsed_options)
         end
 
@@ -63,7 +63,16 @@ module Squaremill
 
         if @options[:format] == "erb"
           template = ERB.new(@body_text)
-          @output = template.result(render_opts[:binding] || Squaremill::Templates::Binding.new(@config, render_opts[:collections], render_opts[:vars]).get_binding)
+          template_binding = render_opts[:binding] || Squaremill::Templates::Binding.new(@config, render_opts).get_binding
+          @output = template.result(template_binding)
+
+          if @options["layout"]
+            path = File.join(@config[:templates_path], @options["layout"])
+            template = Squaremill::Templates.from_path(path, @config)
+            @output = template.render(collections: @collections, content: @output)
+          end
+
+          @output
         else
           @output = @body_text
         end

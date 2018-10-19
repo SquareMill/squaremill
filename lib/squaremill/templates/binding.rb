@@ -1,13 +1,14 @@
 module Squaremill
   module Templates
     class Binding
-      def initialize(config, collections, vars = {})
+      def initialize(config, opts = {})
         @config = config
-        @collections = collections
+        @collections = opts[:collections]
+        @content = opts[:content]
 
-        vars.each do |key, value|
+        opts[:vars].each do |key, value|
           self.define_singleton_method(key) { value }
-        end if vars
+        end if opts[:vars]
       end
 
       def config
@@ -16,6 +17,10 @@ module Squaremill
 
       def collections
         @collections
+      end
+
+      def content
+        @content
       end
 
       def render(file_name, vars = {})
