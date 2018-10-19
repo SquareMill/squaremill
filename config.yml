@@ -1,0 +1,5 @@
+version: 2.0
+
+collections_path: "data/"
+templates_path: "app/"
+output_path: "deploy/"
