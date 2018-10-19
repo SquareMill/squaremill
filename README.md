@@ -26,6 +26,8 @@ Squaremill requires ruby
     - All templates go here
   app/data/
     - All collections go here
+  app/helpers/
+    - All helper code goes here
   deploy/
 
 == Notes

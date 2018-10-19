@@ -11,10 +11,12 @@ module Squaremill
 
     def self.read_all_templates(path, config)
       config.logger.info("Reading templates from #{config[:templates_path]}")
+
       Dir[File.join(config[:templates_path], "/**/*")].each do |file_path|
         next if File.directory?(file_path)
         self.from_path(file_path, config)
       end
+
       @template_cache
     end
   end

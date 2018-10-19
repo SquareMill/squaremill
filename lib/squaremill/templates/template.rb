@@ -63,8 +63,9 @@ module Squaremill
 
         if @options[:format] == "erb"
           template = ERB.new(@body_text)
-          template_binding = render_opts[:binding] || Squaremill::Templates::Binding.new(@config, render_opts).get_binding
-          @output = template.result(template_binding)
+          template_binding = Squaremill::Templates::Binding.new(@config, render_opts.merge(helpers: @options["helpers"]))
+
+          @output = template.result(template_binding.get_binding {|*args| template_binding.handle_yield(args)} )
 
           if @options["layout"]
             path = File.join(@config[:templates_path], @options["layout"])
