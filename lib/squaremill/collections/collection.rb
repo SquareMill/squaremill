@@ -18,7 +18,7 @@ module Squaremill
       @entries[entry["id"]] = entry
     end
 
-    def where(opts = {})
+    def filter(opts = {})
       self.entries.find_all do |id, values|
         opts.all? {|name, value| values[name.to_s] == value }
       end
