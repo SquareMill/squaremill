@@ -11,9 +11,11 @@ module Squaremill
       @config = Squaremill::Config.new("config.yml")
       #config.set_command_line_opts(@command_line_opts)
 
-      @collections = Squaremill::Collection.read_all_collections(@config[:collections_path] || "data/", @config)
+      @collections = Squaremill::Collection.read_all_collections(@config[:collections_path] || "app/data/", @config)
 
-      template_path = @config[:template_path] || "app/"
+      template_path = @config[:templates_path] || "app/views/"
+
+      @config.logger.info("Reading templates from #{template_path}")
 
       Dir[File.join(template_path, "/**/*.html.erb")].each do |file_path|
         template = parse_template(file_path)

@@ -1,4 +1,5 @@
 require 'yaml'
+require 'ostruct'
 
 module Squaremill
   class Collection
@@ -28,7 +29,7 @@ module Squaremill
         @collections[collection_name] = Collection.from_directory(full_path, collection_name, config)
       end
 
-      @collections
+      OpenStruct.new(@collections)
     end
 
     def self.name_from_directory(dir, config)

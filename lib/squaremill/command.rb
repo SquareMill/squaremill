@@ -13,8 +13,14 @@ module Squaremill
         opts.separator ""
         opts.separator "Specific options:"
 
+
+        opts.on("--new-project", "Generate config.yml and directory structure for a new project") do |v|
+          Squaremill::Generator.generate_new_project
+          exit(0)
+        end
+
         opts.on("-c", "--config [PATH]", "Use this value for the config file path") do |v|
-          options[:output_dir] = v
+          options[:config_file] = v
         end
 
         opts.on("-d", "--output-dir [DIRECTORY]", "Write output to this directory, will override output_path value in config file") do |v|

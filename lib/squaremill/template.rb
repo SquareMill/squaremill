@@ -49,6 +49,10 @@ module Squaremill
     #  @body_text, @parsed_options
     end
 
+    def collections
+      @collections
+    end
+
     def render(config, options = {})
       raise "body_text is not set, cannot render template, was extract_options_and body called?" if @body_text.nil?
       @config.logger.debug("Processing template #{@options[:source_path]}") if @options[:source_path]
